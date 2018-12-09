@@ -1,4 +1,4 @@
-#include "MPU6050_tockn.h"
+#include "MPU6050_tockn_fork.h"
 #include "Arduino.h"
 
 MPU6050::MPU6050(TwoWire &w){
@@ -22,9 +22,9 @@ void MPU6050::begin(){
 	this->update();
 	angleGyroX = 0;
 	angleGyroY = 0;
-  angleX = this->getAccAngleX();
-  angleY = this->getAccAngleY();
-  preInterval = millis();
+	angleX = this->getAccAngleX();
+	angleY = this->getAccAngleY();
+	preInterval = millis();
 }
 
 void MPU6050::writeMPU6050(byte reg, byte data){
@@ -50,21 +50,12 @@ void MPU6050::setGyroOffsets(float x, float y, float z){
 	gyroZoffset = z;
 }
 
-void MPU6050::calcGyroOffsets(bool console){
+void MPU6050::calcGyroOffsets(uint8_t steps){
 	float x = 0, y = 0, z = 0;
 	int16_t rx, ry, rz;
 
-  delay(1000);
-	if(console){
-    Serial.println();
-    Serial.println("========================================");
-		Serial.println("calculate gyro offsets");
-		Serial.print("DO NOT MOVE A MPU6050");
-	}
-	for(int i = 0; i < 3000; i++){
-		if(console && i % 1000 == 0){
-			Serial.print(".");
-		}
+	for(uint8_t i = 0; i < steps; i++){
+
 		wire->beginTransmission(MPU6050_ADDR);
 		wire->write(0x3B);
 		wire->endTransmission(false);
@@ -82,20 +73,10 @@ void MPU6050::calcGyroOffsets(bool console){
 		y += ((float)ry) / 65.5;
 		z += ((float)rz) / 65.5;
 	}
-	gyroXoffset = x / 3000;
-	gyroYoffset = y / 3000;
-	gyroZoffset = z / 3000;
 
-	if(console){
-    Serial.println();
-		Serial.println("Done!!!");
-		Serial.print("X : ");Serial.println(gyroXoffset);
-		Serial.print("Y : ");Serial.println(gyroYoffset);
-		Serial.print("Z : ");Serial.println(gyroZoffset);
-		Serial.println("Program will start after 3 seconds");
-    Serial.print("========================================");
-		delay(3000);
-	}
+	gyroXoffset = x / steps;
+	gyroYoffset = y / steps;
+	gyroZoffset = z / steps;
 }
 
 void MPU6050::update(){
@@ -140,6 +121,5 @@ void MPU6050::update(){
 	angleZ = angleGyroZ;
 
 	preInterval = millis();
-
 }
 
