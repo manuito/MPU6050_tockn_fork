@@ -2,7 +2,7 @@
 
 This library is a fork of nice MPU6050 library from tockn [available here](https://github.com/Tockn/MPU6050_tockn)
 
-The updates are a auto-calibration level (method `calcGyroOffsets()`): the console mode has been removed and the process has been simplified. In arg you can now specify the number of update you want before calibration completion.
+The differences between this fork and the original library are at the auto-calibration level (method `calcGyroOffsets()`): the console mode has been removed and the process has been simplified. In arg you can now specify the number of update you want before calibration completion.
 
 This fork was created for my personal use, on a robot plateform. I needed auto-callibration but the startup time was to long while I didn't need a very accurate offset (Gyroscopic position on this robot was only of 1 angle degree in all directions)
 
@@ -32,4 +32,5 @@ MIT
 ## Author
 
 Original author : [Tockn](https://github.com/tockn)
+
 Fork : [manuito](https://github.com/manuito)
